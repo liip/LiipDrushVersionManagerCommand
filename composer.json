@@ -30,7 +30,7 @@
     "extra": {
         "installer-paths": {
             "drush/drush/commands": [
-                "vm"
+                "liip/drushversionmanagercommand"
             ]
         }
     }
