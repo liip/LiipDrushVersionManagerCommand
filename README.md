@@ -5,6 +5,7 @@ On update it uses a custom hook called *hook_vm_update*. With this the module ca
 It has the advantage that the *hook_install* and *hook_uninstall* is not issued. (Ex. loosing all data if the *hook_uninstall* cleans a table in the database.
 
 ## Travis build status
+[![Build Status](https://travis-ci.org/liip/LiipDrushVersionManagerCommand.png?branch=master)](https://travis-ci.org/liip/LiipDrushVersionManagerCommand)
 
 ## Obtain sources
 ### Get it from packagist.org
