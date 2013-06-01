@@ -11,13 +11,14 @@ function vm_drush_help($section) {
         case 'meta:vm:title':
             return dt('Module Version commands');
         case 'meta:vm:summary':
-            return dt('Run an update callback of a module or all installed modules.');
+            return dt('Run an update callback function of a module or all installed modules.');
     }
 }
 
-
 /**
+ * Implementation of the drush command hook.
  *
+ * Defines the commands added by this extension.
  */
 function vm_drush_command()
 {
@@ -62,21 +63,72 @@ function vm_drush_command()
 /**
  * Prints information about the specified module(s).
  *
- * @param array $modules
+ * @param string $modules Comma delimited list of modules to be updated
  */
 function drush_vm_information($modules)
 {
-    // get installed modules
+    if (empty($modules) && _drush_vm_hasOption('all')) {
+
+        // get all installed modules
+        $installedModules = module_list();
+    } else {
+        // split modules
+        $modules = _drush_vm_get_modules_from_arguments($modules);
+
+        if (empty($modules)) {
+            return drush_set_error(
+                'EMPTY_ARGUMENT_LIST',
+                'List of modules or option "--all" missing.',
+                'Version Manager Command Error'
+            );
+        }
+    }
+
+//
+//    foreach ($modules as $module) {
+//        if (array_key_exists())
+//    }
+
     // display retrieved information
+
 }
 
 /**
  * Runs the update of each specified module.
  *
- * @param array $modules
+ * @param string $modules Comma delimited list of modules to be updated
  */
 function drush_vm_run($modules)
 {
     // drush_get_option('all');
     // module_invoke
+
+    drush_print('Not implemented yet ... stay tuned!');
+}
+
+/**
+ * Determines whether an option is set or not.
+ *
+ * @param string $option
+ * @param bool $default
+ * @param string $context
+ *
+ * @return null
+ */
+function _drush_vm_hasOption($option, $default = false, $context = null)
+{
+    return drush_get_option($option, $default, $context);
+}
+
+/**
+ * Split the provides csv into a list.
+ *
+ * @param string $modules Comma delimited list of module names.
+ *
+ * @return array
+ */
+function _drush_vm_get_modules_from_arguments($modules)
+{
+    $pattern = "@,\s*@";
+    return preg_split($pattern, $modules, -1, PREG_SPLIT_NO_EMPTY);
 }
