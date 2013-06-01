@@ -70,9 +70,10 @@ function drush_vm_information($modules)
     if (empty($modules) && _drush_vm_hasOption('all')) {
 
         // get all installed modules
-        $installedModules = module_list();
+        $modules = module_list();
+
     } else {
-        // split modules
+
         $modules = _drush_vm_get_modules_from_arguments($modules);
 
         if (empty($modules)) {
@@ -84,13 +85,31 @@ function drush_vm_information($modules)
         }
     }
 
-//
-//    foreach ($modules as $module) {
-//        if (array_key_exists())
-//    }
+    $extensionInfo = drush_get_extensions(false);
 
-    // display retrieved information
+    foreach ($modules as $module) {
 
+        if (isset($extensionInfo[$module])) {
+          $info = $extensionInfo[$module];
+
+        } else {
+          drush_log(dt('!extension was not found.', array('!extension' => $module)), 'warning');
+          continue;
+        }
+
+        if ($info->type != 'module') {
+            drush_log(dt('!extension is not module.', array('!extension' => $module)), 'warning');
+            continue;
+        }
+
+        $data['Title'] = $info->info['name'];
+        $data['Name'] = $info->name;
+        $data['Version'] = $info->info['version'];
+        $data['Update available to version'] = '5555';
+
+        drush_print_table(drush_key_value_to_array_table($data));
+        print "\n";
+    }
 }
 
 /**
