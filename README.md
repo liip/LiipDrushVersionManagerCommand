@@ -64,7 +64,7 @@ version = 1.0
 
 ```bash
 #!/bin/bash
-DRUSH="/bin/bash drush/drush/drush"
+DRUSH="drush"
 # store version number from installed modules
 $DRUSH php-script scripts/invoke_module_update 
 # update modules if needed
@@ -77,25 +77,25 @@ $DRUSH php-script scripts/update_module_versions
 General usage:
 
 ```bash
-$ /bin/bash drush/drush/drush help vm-update
+$ drush help vm-update
 ```
 
 ### Update all modules
 ```bash
-$ /bin/bash drush/drush/drush vm-update --all
+$ drush vm-update --all
 Updating ModuleName1 ...                                                                                [success]
 Nothing to update for module »ModuleName2«                                                              [warning]
 ```
 
 ### Get short list of all modules which have been updated
 ```bash
-$ /bin/bash drush/drush/drush vm-info --all --short
+$ drush vm-info --all --short
 ModuleName1
 ```
 
 ### Get full information about module update
 ```bash
-$ /bin/bash drush/drush/drush vm-info --full --all
+$ drush vm-info --full --all
 Title                         :  ModuleName1 
  Name                          :  ModuleName1 
  Version                       :  0.1 
