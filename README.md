@@ -1,13 +1,13 @@
-#LiipDrushVersionManagerCommand
+# LiipDrushVersionManagerCommand
 
-##Purpose
+## Purpose
 This drush extension implementes commands to check for new versions of installed modules and update them without issuing *drush dis module && drush pm-uninstall module*.
 
 On update it uses a custom hook called *hook_vm_update*. With this the module can decide if there is something to do on update. And return true on success or false on failure.
 
 It has the advantage that the *hook_install* and *hook_uninstall* is not issued. (Ex. loosing all data if the *hook_uninstall* cleans a table in the database.
 
-##Obtain sources
+## Obtain sources
 
 ### Get it from packagist.org
 To obtain the sources via composer add the following lines to your composer.json file or complete the list of
@@ -52,6 +52,7 @@ function ModuleName_vm_update()
 ```
 
 Add a *version* to the *ModuleName.info* file:
+
 ```php
 // ...
 version = 1.0
