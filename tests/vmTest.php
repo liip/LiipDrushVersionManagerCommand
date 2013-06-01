@@ -19,8 +19,4 @@ class VmTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testHasOption()
-    {
-        $this->assertEquals(true)
-    }
 }
