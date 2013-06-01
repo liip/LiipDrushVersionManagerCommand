@@ -39,8 +39,10 @@ In your *ModuleName.install* file implement the *hook_install*
 
 ```php
 /**
- * Update script
- */
+ * Update script
+ *
+ * @return bool
+ */
 function ModuleName_vm_update()
 {
     // clean out no longer used variables
