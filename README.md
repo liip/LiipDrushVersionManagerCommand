@@ -20,7 +20,7 @@ dependencies.
 ...
 "extra": {
     "installer-paths": {
-        "drush/drush/commands/{$name}/": [
+        "path/2/drush/commands/{$name}/": [
             "liip/drushversionmanagercommand"
         ],
 ```
