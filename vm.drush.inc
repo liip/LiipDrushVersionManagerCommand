@@ -110,8 +110,6 @@ function drush_vm_information($modules = '')
     if (_drush_vm_hasOption('short')) {
         drush_print(implode(',', $data));
     }
-
-    drush_print("\n");
 }
 
 /**
@@ -144,8 +142,20 @@ function drush_vm_run($modules = '')
             continue;
         }
 
-        module_invoke('vm_update', $module);
-        drush_log(dt('Updating !module ... ', array('!module' => $module)), 'success');
+        if (!module_hook($module, 'vm_update')) {
+            drush_log(
+                dt('Updating !module ... no »vm_update« hook available', array('!module' => $module)),
+                'warning'
+            );
+            continue;
+        }
+
+        if (!module_invoke('vm_update', $module)) {
+
+            drush_log(dt('Updating !module ...', array('!module' => $module)), 'error');
+            continue;
+        }
+        drush_log(dt('Updating !module ...', array('!module' => $module)), 'success');
     }
 
 }
