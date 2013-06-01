@@ -1,0 +1,37 @@
+{
+    "name": "liip/drushversionmanagercommand",
+    "description": "This module provides a drush command to maintain module versions.",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "type": "drupal-drush",
+    "keywords": [ "Drupal", "Drupal 7", "Drush" ],
+    "authors": [
+        {
+            "name": "Bastian Feder",
+            "email": "bastian.feder@liip.ch",
+            "role": "maintainer"
+        },
+        {
+            "name": "Patrick Jezek",
+            "email": "patrick.jezek@liip.ch",
+            "role": "maintainer"
+        }
+    ],
+
+    "config": {
+        "github-protocols": ["https", "http", "git"]
+    },
+
+    "require": {
+        "php": ">=5.3.8,<5.4",
+        "drush/drush": "dev-8.x-6.x"
+    },
+
+    "extra": {
+        "installer-paths": {
+            "drush/drush/commands/{$name}/": [
+                "liip/drushversionmanagercommand"
+            ]
+        }
+    }
+}
