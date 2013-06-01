@@ -181,7 +181,7 @@ function _drush_vm_get_module_info($moduleName, array $extensionInfo)
 
     if ($info->type != 'module') {
         throw new InvalidArgumentException(
-            dt('»!extension« is not module.', array('!extension' => $module))
+            dt('»!extension« is not module.', array('!extension' => $moduleName))
         );
     }
 
