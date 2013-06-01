@@ -48,7 +48,7 @@ function vm_drush_command()
             'all' => 'Run the update on all installed and enabled modules',
             'full' => 'show extended information about the module (this is the default)',
             'short' => 'show basic information about the module',
-        ),
+         ),
     );
 
     $items['versionmanager-update'] = array(
@@ -56,15 +56,15 @@ function vm_drush_command()
         'description' => 'Print information about the specified module(s).',
         'aliases' => array('vm-update'),
         'examples' => array(
-            'drush versionmanager-information ' =>
-            'Display information about any users with uids, names, or mail addresses matching the strings between commas.',
+            'drush versionmanager-update --all' =>
+            'Update every named module to the new version.',
         ),
         'arguments' => array(
             'modules' => 'A comma delimited list of module names',
         ),
         'required-arguments' => false,
         'options' => array(
-            'all' => 'Run the update on all installed and enabled modules',
+            'all' => 'Run the update on all installed and enabled modules where an update is available.',
         ),
     );
 
@@ -207,8 +207,12 @@ function _drush_vm_determine_updateable(array $info)
  *
  * @return string
  */
-function _drush_vm_read_version_from_file($moduleName, $filename = DRUPAL_ROOT . "/versions.json")
+function _drush_vm_read_version_from_file($moduleName, $filename = null)
 {
+    if (is_null($filename)) {
+        $filename = DRUPAL_ROOT . "/versions.json";
+    }
+
     if (!file_exists($filename)) {
         return drush_set_error('VERSION_FILE_NOT_FOUND');
     }
