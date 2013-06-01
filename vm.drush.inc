@@ -141,9 +141,9 @@ function drush_vm_run($modules = '')
             drush_log(dt('Nothing to update for module »!module«', array('!module' => $module)), 'warning');
             continue;
         }
-        
+
         // load module install file
-        $includeFileName = module_load_include('install', $module, $module);
+        module_load_include('install', $module, $module);
 
         if (!module_hook($module, 'vm_update')) {
             drush_log(
@@ -153,7 +153,10 @@ function drush_vm_run($modules = '')
             continue;
         }
 
-        if (!module_invoke($module, 'vm_update')) {
+        $lastVersion = _drush_vm_read_version_from_file($info->name);
+        $currentVersion = $info->info['version'];
+
+        if (!module_invoke($module, 'vm_update', array($lastVersion, $currentVersion))) {
 
             drush_log(dt('Updating !module ...', array('!module' => $module)), 'error');
             continue;
