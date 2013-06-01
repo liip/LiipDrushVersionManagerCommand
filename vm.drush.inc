@@ -46,8 +46,8 @@ function vm_drush_command()
         'required-arguments' => false,
         'options' => array(
             'all' => 'Run the update on all installed and enabled modules',
-            'full' => 'show extended information about the module',
-            'short' => 'show basic information about the module (this is the default)',
+            'full' => 'show extended information about the module (this is the default)',
+            'short' => 'show basic information about the module',
         ),
     );
 
@@ -106,8 +106,16 @@ function drush_vm_information($modules = '')
             continue;
         }
 
-        $data = _drush_vm_transcode_to_schema($info);
-        drush_print_table(drush_key_value_to_array_table($data));
+        if (_drush_vm_hasOption('short')) {
+            $data[] = $info->name;
+        } else {
+            $data = _drush_vm_transcode_to_schema($info);
+            drush_print_table(drush_key_value_to_array_table($data));
+        }
+    }
+
+    if (_drush_vm_hasOption('short')) {
+        drush_print(implode(',', $data));
     }
 
     drush_print("\n");
@@ -162,7 +170,9 @@ function _drush_vm_transcode_to_schema(array $info)
     $data = array();
     $data['Title'] = $info->info['name'];
     $data['Name'] = $info->name;
-    $data['Version'] = !empty($info->info['version'])? $info->info['version'] : dt('no version information found.');
+
+    $version = _drush_vm_read_version_from_file($info->name);
+    $data['Version'] = (-1 < $version)? $version : dt('no version information found.');
 
     if (-1 < ($version = _drush_vm_determine_updateable($info))) {
         $data['Update available to version'] = $version;
@@ -180,7 +190,7 @@ function _drush_vm_transcode_to_schema(array $info)
  */
 function _drush_vm_determine_updateable(array $info)
 {
-    $lastVersion = _drush_vm_read_version_from_file($info->name, DRUPAL_ROOT . "/versions.json");
+    $lastVersion = _drush_vm_read_version_from_file($info->name);
     $currentVersion = $info->info['version'];
 
     if (version_compare($lastVersion, $currentVersion, "<")) {
@@ -193,16 +203,17 @@ function _drush_vm_determine_updateable(array $info)
  * Reads the current version of the provides module from a file.
  *
  * @param string $moduleName
+ * @param string $filename
  *
- * @return integer
+ * @return string
  */
-function _drush_vm_read_version_from_file($moduleName, $filename)
+function _drush_vm_read_version_from_file($moduleName, $filename = DRUPAL_ROOT . "/versions.json")
 {
     if (!file_exists($filename)) {
         return drush_set_error('VERSION_FILE_NOT_FOUND');
     }
 
-    $data = @json_decode(@file_get_contents($filename), true);
+    $data = json_decode(file_get_contents($filename), true);
 
     if (!empty($data[$moduleName])) {
         return $data[$moduleName];
