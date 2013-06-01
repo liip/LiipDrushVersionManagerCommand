@@ -4,6 +4,8 @@ This drush extension implementes commands to check for new versions of installed
 On update it uses a custom hook called *hook_vm_update*. With this the module can decide if there is something to do on update. And return true on success or false on failure.
 It has the advantage that the *hook_install* and *hook_uninstall* is not issued. (Ex. loosing all data if the *hook_uninstall* cleans a table in the database.
 
+## Travis build status
+
 ## Obtain sources
 ### Get it from packagist.org
 To obtain the sources via composer add the following lines to your composer.json file or complete the list of
