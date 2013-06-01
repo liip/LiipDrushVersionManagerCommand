@@ -141,9 +141,11 @@ function drush_vm_run($modules = '')
             drush_log(dt('Nothing to update for module »!module«', array('!module' => $module)), 'warning');
             continue;
         }
-        
+
         // load module install file
         $includeFileName = module_load_include('install', $module, $module);
+
+        $updateFunctions = _drush_vm_get_all_update_functions($module);
 
         if (!module_hook($module, 'vm_update')) {
             drush_log(
@@ -161,6 +163,28 @@ function drush_vm_run($modules = '')
         drush_log(dt('Updating !module ...', array('!module' => $module)), 'success');
     }
 
+}
+
+function _drush_vm_get_all_update_functions($module = '')
+{
+
+    $allFunctions = get_defined_functions();
+    $allFunctions = array_map('_drush_vm_match_function_name', $allFunctions['user']);
+    $allFunctions = array_flip($allFunctions);
+    unset($allFunctions['-1']);
+    $allFunctions = array_keys($allFunctions);
+    sort($allFunctions);
+    print_r($allFunctions);
+
+}
+
+function _drush_vm_match_function_name($value)
+{
+
+    if (false === strstr($value, 'vm_update')) {
+        return -1;
+    }
+    return $value;
 }
 
 /**
