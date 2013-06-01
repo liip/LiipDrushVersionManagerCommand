@@ -84,7 +84,7 @@ $ /bin/bash drush/drush/drush help vm-update
 ```bash
 $ /bin/bash drush/drush/drush vm-update --all
 Updating ModuleName1 ...                                                                                [success]
-Nothing to update for module »ModuleName1«                                                              [warning]
+Nothing to update for module »ModuleName2«                                                              [warning]
 ```
 
 ### Get short list of all modules which have been updated
