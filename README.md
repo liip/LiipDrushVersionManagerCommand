@@ -1,14 +1,10 @@
 # LiipDrushVersionManagerCommand
-
 ## Purpose
 This drush extension implementes commands to check for new versions of installed modules and update them without issuing *drush dis module && drush pm-uninstall module*.
-
 On update it uses a custom hook called *hook_vm_update*. With this the module can decide if there is something to do on update. And return true on success or false on failure.
-
 It has the advantage that the *hook_install* and *hook_uninstall* is not issued. (Ex. loosing all data if the *hook_uninstall* cleans a table in the database.
 
 ## Obtain sources
-
 ### Get it from packagist.org
 To obtain the sources via composer add the following lines to your composer.json file or complete the list of
 dependencies.
@@ -33,7 +29,6 @@ $> php composer.phar install
 ```
 
 ## Getting started
-
 Sources fetched? Brilliant.. now we can start using the module updater.
 In your *ModuleName.install* file implement the *hook_install*
 
@@ -46,10 +41,10 @@ In your *ModuleName.install* file implement the *hook_install*
 function ModuleName_vm_update()
 {
     // clean out no longer used variables
-    variable_del('ModuleName_some_variable')
+    variable_set('ModuleName_some_variable', 'myValue')
     
-    // this function was successful
-    return true;
+    // this update was successful
+    return (bool) variable_get('ModuleName_some_variable', false);
 }
 ```
 
@@ -60,7 +55,6 @@ Add a *version* to the *ModuleName.info* file:
 version = 1.0
 // ...
 ```
-
 
 ## Let composer *post_install* or *post_update* handle module updates
 
@@ -89,13 +83,13 @@ Updating ModuleName1 ...                            
 Nothing to update for module »ModuleName2«                                                              [warning]
 ```
 
-### Get short list of all modules which have been updated
+### Get short list of all modules were an update is available
 ```bash
 $ drush vm-info --all --short
-ModuleName1
+ModuleName1, ModuleName2, ..., ModuleNameN
 ```
 
-### Get full information about module update
+### Get full information about module updates
 ```bash
 $ drush vm-info --full --all
 Title                         :  ModuleName1 
@@ -109,5 +103,3 @@ Title     :  ModuleName2        
  
 ...
 ```
-
-
